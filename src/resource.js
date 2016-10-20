@@ -1,6 +1,6 @@
 var res = {
-  player_png: "res/player2.png",
-  background_png: "res/background1.png",
+  player_png: "res/player5.png",
+  background_png: "res/utyu.jpg",
 
 };
 

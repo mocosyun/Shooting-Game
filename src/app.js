@@ -31,6 +31,10 @@ var game = cc.Layer.extend({
         //scheduleUpdate関数は、描画の都度、update関数を呼び出す
         this.scheduleUpdate();
 
+        player = new cc.Sprite(res.player_png);
+        player.setPosition(60,160);
+        this.addChild(player);
+
     },
     update:function(dt){
       //backgroundのscrollメソッドを呼び出す
@@ -61,15 +65,4 @@ var ScrollingBG = cc.Sprite.extend({
             this.setPosition(this.getPosition().x+480,this.getPosition().y);
         }
     }
-});
-
-var player = cc.Sprite.extend({
-    ctor:function() {
-      this._super();
-      this.initWithFile(res.player_png);
-      this.ySpeed = 0; //宇宙船の垂直速度
-    },
-    onEnter: function() {
-      this.setPosition(60, 160);
-    },
 });
