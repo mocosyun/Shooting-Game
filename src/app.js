@@ -5,6 +5,8 @@ var gameLayer;
 var background;
 var scrollSpeed = 1;
 var player;
+var xSpeed = 0; //xプレイヤースピード
+var ySpeed = 0; //yプレイヤースピード
 
 var gameScene = cc.Scene.extend({
     onEnter:function () {
@@ -31,9 +33,21 @@ var game = cc.Layer.extend({
         //scheduleUpdate関数は、描画の都度、update関数を呼び出す
         this.scheduleUpdate();
 
+        //player表示
         player = new cc.Sprite(res.player_png);
-        player.setPosition(60,160);
+        player.setPosition(60, 160);
+        player.setScale(0.4, 0.4);
+        player.ySpeed = 0;
+        player.xSpeed = 0;
+
+        cc.eventManager.addListener(keylistener, this);
+
         this.addChild(player);
+
+        //enemy表示
+        Enemy = new cc.Sprite(res.enemy_png);
+        Enemy.setPosition(260, 160);
+        this.addChild(Enemy);
 
     },
     update:function(dt){
@@ -65,4 +79,33 @@ var ScrollingBG = cc.Sprite.extend({
             this.setPosition(this.getPosition().x+480,this.getPosition().y);
         }
     }
+});
+
+//キーボードリスナープレイヤー移動処理
+var keylistener = cc.EventListener.create({
+  event: cc.EventListener.KEYBOARD,
+  // setSwallowTouches: true,
+
+  onKeyPressed: function(KeyCode, event){
+    //左に移動
+    if (KeyCode == 37) {
+      player.xSpeed = -2.5;
+      console.log("左");
+    }//右に移動
+    if (KeyCode == 39) {
+      player.xSpeed = 2.5;
+      console.log("右");
+    }
+    //上に移動
+    if (KeyCode == 38) {
+      player.ySpeed = 2.5;
+      console.log("上");
+    }
+    //下に移動
+    if (KeyCode == 40) {
+      player.ySpeed = -2.5;
+      console.log("下");
+    }
+    return true;
+  }
 });
