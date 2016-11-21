@@ -10,7 +10,7 @@ var ySpeed = 0; //yプレイヤースピード
 
 var gameScene = cc.Scene.extend({
     onEnter:function () {
-      //  var gradient = cc.LayerGradient.create(cc.color(0, 0, 0, 255), cc.color(0x46, 0x82, 0xB4, 255));
+      //  var gradient = cc.LayerGradient.create(cc.color(0, 0, 0, 288), cc.color(0x46, 0x82, 0xB4, 288));
       //  this.addChild(gradient);
         this._super();
         gameLayer = new game();
@@ -39,6 +39,8 @@ var game = cc.Layer.extend({
         player.setScale(0.4, 0.4);
         player.ySpeed = 0;
         player.xSpeed = 0;
+        winSize = cc.director.getWinSize();
+        player.screenRect = cc.Rect(0, 0, winSize.width, winSize.height);
 
         cc.eventManager.addListener(keylistener, this);
 
@@ -49,13 +51,32 @@ var game = cc.Layer.extend({
         Enemy.setPosition(260, 160);
         this.addChild(Enemy);
 
+        //item表示
+        scoreitem = new cc.Sprite(res.scoreitem_png);
+        scoreitem.setPosition(200,160);
+        this.addChild(scoreitem)
+
     },
     update:function(dt){
       //backgroundのscrollメソッドを呼び出す
         background.scroll();
 
+        var new_pos_x = player.getPosition().x + player.xSpeed;
+        var new_pos_y = player.getPosition().y + player.ySpeed;
+        if(new_pos_x < 8 ) {
+          new_pos_x = 8;
+        }
+        if( new_pos_x > size.width - 8) {
+            new_pos_x = size.width - 8;
+        }
+        if(new_pos_y < 8 ) {
+          new_pos_y = 8;
+        }
+        if( new_pos_y > size.height - 8) {
+            new_pos_y = size.height - 8;
+        }
+        player.setPosition(new_pos_x,new_pos_y );
     },
-
 });
 
 //スクロール移動する背景クラス
@@ -89,23 +110,27 @@ var keylistener = cc.EventListener.create({
   onKeyPressed: function(KeyCode, event){
     //左に移動
     if (KeyCode == 37) {
-      player.xSpeed = -2.5;
+      player.xSpeed = -3.8;
       console.log("左");
     }//右に移動
     if (KeyCode == 39) {
-      player.xSpeed = 2.5;
+      player.xSpeed = 3.8;
       console.log("右");
     }
     //上に移動
     if (KeyCode == 38) {
-      player.ySpeed = 2.5;
+      player.ySpeed = 3.8;
       console.log("上");
     }
     //下に移動
     if (KeyCode == 40) {
-      player.ySpeed = -2.5;
+      player.ySpeed = -3.8;
       console.log("下");
     }
     return true;
+  },
+  onKeyReleased: function(KeyCode, event) {
+    player.xSpeed = 0;
+    player.ySpeed = 0;
   }
 });
