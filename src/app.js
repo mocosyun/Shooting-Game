@@ -206,8 +206,8 @@ var enemy = cc.Sprite.extend({
 
      this.scheduleUpdate();
 
-        // var moveAction = cc.MoveTo.create(65, new cc.Point(enemy.getPosition().x * -50));
-        // this.runAction(moveAction);
+        var moveAction = cc.MoveTo.create(65, new cc.Point(enemy.getPosition().x * -50));
+        this.runAction(moveAction);
         this.scheduleUpdate();
     },
      update: function(dt) {
